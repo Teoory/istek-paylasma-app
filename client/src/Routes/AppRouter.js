@@ -1,0 +1,72 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../Hooks/UserContext';
+import { Routes, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+
+import Home from '../Pages/Home';
+
+import Login from '../Pages/Login';
+import Register from '../Pages/RegisterPage';
+import ProfilPage from '../Pages/ProfilPage';
+
+import SuggestionForm from '../Pages/SuggestionForm';
+import PreviewPage from '../Pages/PreviewPage';
+import AdminPage from '../Pages/AdminPage';
+
+
+const AppRouter = () => {
+  const { setUserInfo, userInfo } = useContext(UserContext);
+  const [allowGuestSuggestions, setAllowGuestSuggestions] = useState(false);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const response = await fetch('http://localhost:3030/settings', {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      setAllowGuestSuggestions(data.allowGuestSuggestions);
+    };
+    fetchSettings();
+  }, []);
+  
+  useEffect(() => {
+    fetch('http://localhost:3030/profile', {
+        credentials: 'include',
+    }).then(response => {
+            response.json().then(userInfo => {
+                setUserInfo(userInfo);
+            });
+        })
+  }, []);
+  
+  const role = userInfo?.role;
+  const isAdmin = role === 'admin';
+  const isModerator = role === 'moderator';
+
+  return (
+    <Routes>
+        <Route path="/*" element={<Home />} />
+
+        {(allowGuestSuggestions || isAdmin || isModerator) && (
+          <Route path="/submit" element={<SuggestionForm />} />
+        )}
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {userInfo && (
+        <Route path="/profile/:username" element={<ProfilPage />} />
+        )}
+
+        {isAdmin && (
+          <>
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/preview" element={<PreviewPage />} />
+          </>
+        )}
+        
+    </Routes>
+  )
+}
+
+export default AppRouter
