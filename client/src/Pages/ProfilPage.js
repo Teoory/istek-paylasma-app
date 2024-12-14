@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { UserContext } from '../Hooks/UserContext';
+import { API_BASE_URL } from '../config';
 
 
 const ProfilPage = () => {
@@ -9,7 +10,7 @@ const ProfilPage = () => {
     const { userInfo } = useContext(UserContext);
 
     useEffect(() => {
-        fetch(`http://localhost:3030/profile/${username}`)
+        fetch(`${API_BASE_URL}/profile/${username}`)
             .then(response => response.json())
             .then(data => setUserProfile(data));
     }, [username]);

@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../Hooks/UserContext';
+import { API_BASE_URL } from '../config';
 
 function Home() {
   const [suggestions, setSuggestions] = useState([]);
@@ -12,7 +13,7 @@ function Home() {
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      const response = await fetch('http://localhost:3030/suggestions', {
+      const response = await fetch(`${API_BASE_URL}/suggestions`, {
         credentials: 'include',
       });
       let data = await response.json();
@@ -38,7 +39,7 @@ function Home() {
 
   const voteSuggestion = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3030/vote/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/vote/${id}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -60,7 +61,7 @@ function Home() {
 
   const deleteSuggestion = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3030/delete/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/delete/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });

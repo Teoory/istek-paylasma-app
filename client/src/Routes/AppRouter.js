@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../Hooks/UserContext';
 import { Routes, Route } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 import Home from '../Pages/Home';
 
@@ -20,7 +20,7 @@ const AppRouter = () => {
 
   useEffect(() => {
     const fetchSettings = async () => {
-      const response = await fetch('http://localhost:3030/settings', {
+      const response = await fetch(`${API_BASE_URL}/settings`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -30,7 +30,7 @@ const AppRouter = () => {
   }, []);
   
   useEffect(() => {
-    fetch('http://localhost:3030/profile', {
+    fetch(`${API_BASE_URL}/profile`, {
         credentials: 'include',
     }).then(response => {
             response.json().then(userInfo => {

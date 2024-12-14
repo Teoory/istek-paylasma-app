@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../Hooks/UserContext';
+import { API_BASE_URL } from '../config';
 import './Login.css';
 
 const Login = () => {
@@ -11,7 +12,7 @@ const Login = () => {
 
     async function login(ev) {
         ev.preventDefault();
-        const response = await fetch('http://localhost:3030/login', {
+        const response = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             mode: 'cors',
             redirect: 'follow',

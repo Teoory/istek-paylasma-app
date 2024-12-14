@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../Hooks/UserContext';
+import { API_BASE_URL } from '../config';
 
 function SuggestionForm() {
   const [suggestion, setSuggestion] = useState('');
@@ -14,7 +15,7 @@ function SuggestionForm() {
 
 
     try {
-      const response = await fetch('http://localhost:3030/suggestion', {
+      const response = await fetch(`${API_BASE_URL}/suggestion`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

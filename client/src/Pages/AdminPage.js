@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 function AdminPage() {
   const [allowGuestSuggestions, setAllowGuestSuggestions] = useState(true);
 
   useEffect(() => {
     const fetchSettings = async () => {
-      const response = await fetch('http://localhost:3030/settings', {
+      const response = await fetch(`${API_BASE_URL}/settings`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -16,7 +17,7 @@ function AdminPage() {
 
   const toggleGuestSuggestions = async () => {
     try {
-      const response = await fetch('http://localhost:3030/toggle-guest-suggestions', {
+      const response = await fetch(`${API_BASE_URL}/toggle-guest-suggestions`, {
         method: 'POST',
         credentials: 'include',
       });

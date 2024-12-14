@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 function PreviewPage() {
   const [suggestions, setSuggestions] = useState([]);
@@ -7,7 +8,7 @@ function PreviewPage() {
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      const response = await fetch('http://localhost:3030/preview', {
+      const response = await fetch(`${API_BASE_URL}/preview`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -18,7 +19,7 @@ function PreviewPage() {
 
   const approveSuggestion = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3030/approve/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/approve/${id}`, {
         method: 'PUT',
         credentials: 'include',
       });
@@ -35,7 +36,7 @@ function PreviewPage() {
 
   const deleteSuggestion = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3030/delete/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/delete/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
