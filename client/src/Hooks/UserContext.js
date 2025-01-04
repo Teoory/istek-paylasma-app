@@ -1,38 +1,42 @@
-import { useEffect, useState, createContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import { API_BASE_URL } from '../config';
 
-export const UserContext = createContext();
+export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
-  const [userInfo, setUserInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getUserProfile = async () => {
-      try {
-        const response = await fetch('http://localhost:3030/profile', {
-          credentials: 'include',
-        });
+    useEffect(() => {
+        fetch(`${API_BASE_URL}/profile`, {
+            credentials: 'include',
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setUserInfo(data || null);
+                setLoading(false);
+            })
+            .catch(() => {
+                setUserInfo(null);
+                setLoading(false);
+            });
+    }, []);
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data && !data.message) {
-            setUserInfo(data); // Valid user data
-          } else {
-            setUserInfo(null); // No token or invalid token
-          }
+    useEffect(() => {
+        const savedUserInfo = localStorage.getItem('userInfo');
+        if (savedUserInfo) {
+            setUserInfo(JSON.parse(savedUserInfo));
         } else {
-          setUserInfo(null); // Clear user info on error
+            fetch(`${API_BASE_URL}/profile`, { credentials: 'include' })
+                .then(response => response.json())
+                .then(data => setUserInfo(data || null));
         }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-        setUserInfo(null); // Handle fetch failure
-      }
-    };
-    getUserProfile();
-  }, []);
+    }, []);
+    
 
-  return (
-    <UserContext.Provider value={{ userInfo, setUserInfo }}>
-      {children}
-    </UserContext.Provider>
-  );
+    return (
+        <UserContext.Provider value={{ userInfo, setUserInfo, loading }}>
+            {children}
+        </UserContext.Provider>
+    );
 }

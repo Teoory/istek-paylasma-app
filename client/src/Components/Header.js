@@ -18,25 +18,25 @@ function Header() {
       fetchSettings();
     }, []);
 
-    useEffect(() => {
-        try {
-            fetch(`${API_BASE_URL}/profile`, {
-                credentials: 'include',
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error('Profile fetch failed');
-                }
-                return response.json();
-            }).then(userInfo => {
-                setUserInfo(userInfo);
-            }).catch(error => {
-                console.error('Error fetching profile:', error);
-            });
-        }
-        catch (error) {
-            console.error('Error fetching profile:', error);
-        }
-    }, []);
+    // useEffect(() => {
+    //     try {
+    //         fetch(`${API_BASE_URL}/profile`, {
+    //             credentials: 'include',
+    //         }).then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Profile fetch failed');
+    //             }
+    //             return response.json();
+    //         }).then(userInfo => {
+    //             setUserInfo(userInfo);
+    //         }).catch(error => {
+    //             console.error('Error fetching profile:', error);
+    //         });
+    //     }
+    //     catch (error) {
+    //         console.error('Error fetching profile:', error);
+    //     }
+    // }, []);
 
     const username = userInfo?.username;
 

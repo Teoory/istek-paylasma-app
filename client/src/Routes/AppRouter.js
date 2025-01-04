@@ -15,7 +15,7 @@ import AdminPage from '../Pages/AdminPage';
 
 
 const AppRouter = () => {
-  const { setUserInfo, userInfo } = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const [allowGuestSuggestions, setAllowGuestSuggestions] = useState(false);
 
   useEffect(() => {
@@ -27,16 +27,6 @@ const AppRouter = () => {
       setAllowGuestSuggestions(data.allowGuestSuggestions);
     };
     fetchSettings();
-  }, []);
-  
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/profile`, {
-        credentials: 'include',
-    }).then(response => {
-            response.json().then(userInfo => {
-                setUserInfo(userInfo);
-            });
-        })
   }, []);
   
   const role = userInfo?.role;
